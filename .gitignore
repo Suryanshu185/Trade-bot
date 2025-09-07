@@ -90,8 +90,8 @@ dmypy.json
 *.swp
 *.swo
 
-# Data files
-data/
+# Data files (exclude data directory but allow source code)
+/data/
 *.parquet
 *.csv
 *.h5
