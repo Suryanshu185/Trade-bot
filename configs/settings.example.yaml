@@ -1,0 +1,207 @@
+# Trade Bot Configuration
+# Copy this file to configs/settings.yaml and customize as needed
+
+# Exchange Configuration
+exchange:
+  name: "binance"
+  sandbox: true  # Use sandbox for testing
+  api_key: null  # Set your API key here (paper trading doesn't need real keys)
+  secret: null   # Set your secret here (paper trading doesn't need real keys)
+  rate_limit: 1200  # Requests per minute
+  timeout: 30  # Timeout in seconds
+
+# Trading Configuration
+trading:
+  # Symbols to trade
+  symbols:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "ADA/USDT"
+    - "SOL/USDT"
+    - "MATIC/USDT"
+  
+  # Timeframes for data collection
+  timeframes:
+    - "1m"
+    - "5m"
+    - "1h"
+  
+  # Primary timeframe for signals
+  primary_timeframe: "5m"
+  
+  # Risk Management
+  max_position_size: 0.1        # Maximum 10% of equity per position
+  max_daily_loss: 0.02          # Stop trading if daily loss exceeds 2%
+  max_risk_per_trade: 0.005     # Maximum 0.5% risk per trade
+  target_volatility: 0.15       # Target 15% annualized volatility
+  kelly_cap: 0.25               # Cap Kelly fraction at 25%
+  
+  # Strategy Parameters
+  momentum_lookback: 20         # Lookback period for momentum signals
+  mean_reversion_lookback: 14   # Lookback period for mean reversion
+  volatility_lookback: 20       # Lookback period for volatility calculation
+  
+  # Machine Learning Parameters
+  ml_probability_threshold: 0.6    # Minimum probability for ML signals
+  ml_lookback_periods: 100        # Training lookback periods
+
+# Backtesting Configuration
+backtest:
+  start_date: "2021-01-01"
+  end_date: "2024-01-01"
+  initial_cash: 100000.0
+  
+  # Cost Model
+  commission: 0.001      # 0.1% commission
+  slippage_bps: 2.0      # 2 basis points slippage
+  
+  # Walk-forward Optimization
+  train_months: 6        # Training period in months
+  test_months: 1         # Testing period in months
+
+# Data Configuration
+data:
+  cache_dir: "data/cache"
+  data_dir: "data/raw"
+  results_dir: "data/results"
+  
+  # Data refresh settings
+  refresh_interval_hours: 1    # Refresh data every hour
+  max_cache_age_days: 7        # Keep cache for 7 days
+
+# Logging Configuration
+debug: false
+log_level: "INFO"
+
+# Feature Engineering Settings
+features:
+  # Technical Indicators
+  rsi_periods: [2, 14]          # RSI periods to calculate
+  ema_periods: [10, 20, 50]     # EMA periods
+  sma_periods: [10, 20, 50]     # SMA periods
+  bollinger_period: 20          # Bollinger Bands period
+  bollinger_std: 2.0            # Bollinger Bands standard deviations
+  
+  # Momentum Indicators
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  
+  # Volatility Indicators
+  atr_period: 14
+  volatility_periods: [10, 20, 50]
+  
+  # Volume Indicators
+  volume_sma_periods: [10, 20]
+  vwap_period: 20
+
+# Strategy-Specific Settings
+strategies:
+  momentum_breakout:
+    enabled: true
+    lookback_high_low: 20
+    volatility_filter_window: 20
+    trend_filter_window: 50
+    min_compression_ratio: 0.8
+    min_trend_strength: 0.02
+  
+  mean_reversion:
+    enabled: true
+    rsi_oversold: 30
+    rsi_overbought: 70
+    rsi_short_oversold: 10
+    rsi_short_overbought: 90
+    zscore_threshold: 2.0
+    volatility_filter_percentile: 50
+  
+  ml_signals:
+    enabled: true
+    model_type: "gradient_boosting"
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
+    feature_selection: "auto"
+    cross_validation_folds: 3
+
+# Risk Management Settings
+risk_management:
+  # Position Limits
+  max_positions: 10
+  max_sector_weight: 0.3
+  max_correlation: 0.7
+  
+  # Stop Loss Settings
+  default_stop_loss_pct: 0.02    # 2% stop loss
+  trailing_stop_enabled: true
+  trailing_stop_distance_pct: 0.015  # 1.5% trailing stop
+  
+  # Take Profit Settings
+  default_take_profit_ratio: 2.0  # 2:1 risk/reward ratio
+  
+  # Daily Limits
+  daily_loss_limit: 0.02         # 2% daily loss limit
+  max_daily_trades: 50           # Maximum trades per day
+  
+  # Kill Switch
+  kill_switch_enabled: true
+  auto_shutdown_on_limit: true
+
+# Paper Trading Settings
+paper_trading:
+  initial_cash: 100000.0
+  realistic_execution: true
+  
+  # Execution Simulation
+  min_latency_ms: 10
+  max_latency_ms: 100
+  market_impact_model: "sqrt"
+  partial_fill_probability: 0.05
+  
+  # Reporting
+  daily_reports: true
+  real_time_updates: true
+  performance_tracking: true
+
+# Live Trading Settings (for future implementation)
+live_trading:
+  enabled: false  # Disabled by default for safety
+  paper_mode: true
+  
+  # Order Management
+  order_timeout_seconds: 300
+  max_retries: 3
+  
+  # Position Management
+  auto_close_on_shutdown: true
+  emergency_liquidation: true
+
+# Notification Settings (for future implementation)
+notifications:
+  enabled: false
+  
+  # Email notifications
+  email:
+    enabled: false
+    smtp_server: null
+    smtp_port: 587
+    username: null
+    password: null
+    to_addresses: []
+  
+  # Webhook notifications
+  webhook:
+    enabled: false
+    url: null
+    events: ["trade_executed", "risk_event", "daily_report"]
+
+# Performance Monitoring
+monitoring:
+  # Metrics Collection
+  track_performance: true
+  save_equity_curve: true
+  save_trade_details: true
+  
+  # Health Checks
+  heartbeat_interval: 60  # seconds
+  max_memory_usage_mb: 1000
+  max_cpu_usage_pct: 80
